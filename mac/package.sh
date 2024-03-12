@@ -64,7 +64,7 @@ mkdir -p "./temp/"
 
 build_type "VST3" ${PROJECT_ROOT}/bin/VST3/*.vst3 "${BUNDLE_ID}.VST3.pkg" "/Library/Audio/Plug-Ins/VST3"
 build_type "AU" ${PROJECT_ROOT}/bin/AU/*.component "${BUNDLE_ID}.AU.pkg" "/Library/Audio/Plug-Ins/Components"
-build_type "Standalone" ${PROJECT_ROOT}/bin/Standalone/*.app "${BUNDLE_ID}.Standalone.pkg" "/tmp/${COMPANY_NAME}/${PROJECT_NAME}"
+build_type "Standalone" ${PROJECT_ROOT}/bin/Standalone/*.app "${BUNDLE_ID}.Standalone.pkg" "/tmp/${COMPANY_NAME}/${RESOURCE_NAME}"
 
 RESOURCES_DIR="${PROJECT_ROOT}/resources"
 
@@ -79,7 +79,7 @@ if [ "$HAS_RESOURCES" = true ]; then
   pkgbuild --sign "$APPLE_INSTALL_CERT" --root "${PROJECT_ROOT}/resources" \
   --identifier "${BUNDLE_ID}.resources.pkg" --version ${VERSION} \
   --scripts ${PROJECT_ROOT}/installers/mac/Resources/postinstall \
-  --install-location "/tmp/${COMPANY_NAME}/${PROJECT_NAME}/resources" ${TMPDIR}/${PROJECT_NAME}_Resources.pkg
+  --install-location "/tmp/${COMPANY_NAME}/${RESOURCE_NAME}/resources" ${TMPDIR}/${RESOURCE_NAME}_Resources.pkg
 
   codesign --force -s "$APPLE_APP_CERT" -o runtime --deep --timestamp \
     --digest-algorithm=sha1,sha256 "${TMPDIR}/${PROJECT_NAME}_Resources.pkg"

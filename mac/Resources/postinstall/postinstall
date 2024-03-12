@@ -8,18 +8,18 @@ COMPANY_NAME=imagiro
 
 for dir in /tmp/"$COMPANY_NAME"/*/; do
   if [ -e "$dir" ]; then
-    PROJECT_NAME=$(basename "$dir")
-    echo processing "$PROJECT_NAME"
+    RESOURCE_NAME=$(basename "$dir")
+    echo processing "$RESOURCE_NAME"
 
-    if [ -e "${dir}/${PROJECT_NAME}.app" ]; then
+    if [ -e "${dir}/${RESOURCE_NAME}.app" ]; then
       echo "copying standalone"
-      rsync -ar "/tmp/${COMPANY_NAME}/${PROJECT_NAME}/${PROJECT_NAME}.app" "/Applications/"
-      chown -R ${USER}:staff "/Applications/${PROJECT_NAME}.app"
+      rsync -ar "/tmp/${COMPANY_NAME}/${RESOURCE_NAME}/${RESOURCE_NAME}.app" "/Applications/"
+      chown -R ${USER}:staff "/Applications/${RESOURCE_NAME}.app"
     fi
 
     if [ -e "${dir}/resources/user" ]; then
       echo "copying user resources"
-      USER_RES="${HOME}/Library/Application Support/${COMPANY_NAME}/${PROJECT_NAME}"
+      USER_RES="${HOME}/Library/Application Support/${COMPANY_NAME}/${RESOURCE_NAME}"
       mkdir -p "$USER_RES"
       chown -R ${USER}:staff "${USER_RES}"
       chmod -R 755 "${USER_RES}"
@@ -29,7 +29,7 @@ for dir in /tmp/"$COMPANY_NAME"/*/; do
 
     if [ -e "${dir}/resources/system" ]; then
       echo "copying system resources"
-      SYSTEM_RES="/Library/Application Support/${COMPANY_NAME}/${PROJECT_NAME}"
+      SYSTEM_RES="/Library/Application Support/${COMPANY_NAME}/${RESOURCE_NAME}"
       mkdir -p "${SYSTEM_RES}"
       chown -R ${USER}:staff "${SYSTEM_RES}"
       chmod -R 755 "${SYSTEM_RES}"
