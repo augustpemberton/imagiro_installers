@@ -7,13 +7,13 @@ COMPANY_NAME=imagiro
 # this is done in postinstall because the installer cannot access both system and user dirs
 
 for dir in /tmp/"$COMPANY_NAME"/*/; do
-  if [ -e $dir ]; then
+  if [ -e "$dir" ]; then
     PROJECT_NAME=$(basename "$dir")
     echo processing "$PROJECT_NAME"
 
     if [ -e "${dir}/${PROJECT_NAME}.app" ]; then
       echo "copying standalone"
-      rsync -r --delete "/tmp/${COMPANY_NAME}/${PROJECT_NAME}/${PROJECT_NAME}.app" /Applications
+      rsync -ar "/tmp/${COMPANY_NAME}/${PROJECT_NAME}/${PROJECT_NAME}.app" "/Applications/"
       chown -R ${USER}:staff "/Applications/${PROJECT_NAME}.app"
     fi
 
@@ -24,7 +24,7 @@ for dir in /tmp/"$COMPANY_NAME"/*/; do
       chown -R ${USER}:staff "${USER_RES}"
       chmod -R 755 "${USER_RES}"
 
-      rsync -r "${dir}/resources/user/" "${USER_RES}"
+      rsync -ar "${dir}/resources/user/" "${USER_RES}"
     fi
 
     if [ -e "${dir}/resources/system" ]; then
@@ -34,11 +34,11 @@ for dir in /tmp/"$COMPANY_NAME"/*/; do
       chown -R ${USER}:staff "${SYSTEM_RES}"
       chmod -R 755 "${SYSTEM_RES}"
 
-      rsync -r "${dir}/resources/system/" "${SYSTEM_RES}"
+      rsync -ar "${dir}/resources/system/" "${SYSTEM_RES}"
     fi
 
   fi
 done
 
 
-#rm -rf "/tmp/${COMPANY_NAME}"
+rm -rf "/tmp/${COMPANY_NAME}"
