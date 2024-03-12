@@ -13,7 +13,7 @@ for dir in /tmp/"$COMPANY_NAME"/*/; do
 
     if [ -e "${dir}/${RESOURCE_NAME}.app" ]; then
       echo "copying standalone"
-      rsync -ar "/tmp/${COMPANY_NAME}/${RESOURCE_NAME}/${RESOURCE_NAME}.app" "/Applications/"
+      rsync  -ar --remove-source-files "/tmp/${COMPANY_NAME}/${RESOURCE_NAME}/${RESOURCE_NAME}.app" "/Applications/"
       chown -R ${USER}:staff "/Applications/${RESOURCE_NAME}.app"
     fi
 
@@ -24,7 +24,7 @@ for dir in /tmp/"$COMPANY_NAME"/*/; do
       chown -R ${USER}:staff "${USER_RES}"
       chmod -R 755 "${USER_RES}"
 
-      rsync -ar "${dir}/resources/user/" "${USER_RES}"
+      rsync -ar --remove-source-files "${dir}/resources/user/" "${USER_RES}"
     fi
 
     if [ -e "${dir}/resources/system" ]; then
@@ -34,7 +34,7 @@ for dir in /tmp/"$COMPANY_NAME"/*/; do
       chown -R ${USER}:staff "${SYSTEM_RES}"
       chmod -R 755 "${SYSTEM_RES}"
 
-      rsync -ar "${dir}/resources/system/" "${SYSTEM_RES}"
+      rsync -ar --remove-source-files "${dir}/resources/system/" "${SYSTEM_RES}"
     fi
 
   fi
