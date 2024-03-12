@@ -1,0 +1,44 @@
+#!/bin/bash
+
+COMPANY_NAME=imagiro
+
+# this script moves the standalone version of the plugin to the /Applications directory
+# it also moves any user and system resources to the correct locations, and sets correct permissions
+# this is done in postinstall because the installer cannot access both system and user dirs
+
+for dir in /tmp/"$COMPANY_NAME"/*/; do
+  if [ -e $dir ]; then
+    PROJECT_NAME=$(basename "$dir")
+    echo processing "$PROJECT_NAME"
+
+    if [ -e "${dir}/${PROJECT_NAME}.app" ]; then
+      echo "copying standalone"
+      rsync -r --delete "/tmp/${COMPANY_NAME}/${PROJECT_NAME}/${PROJECT_NAME}.app" /Applications
+      chown -R ${USER}:staff "/Applications/${PROJECT_NAME}.app"
+    fi
+
+    if [ -e "${dir}/resources/user" ]; then
+      echo "copying user resources"
+      USER_RES="${HOME}/Library/Application Support/${COMPANY_NAME}/${PROJECT_NAME}"
+      mkdir -p "$USER_RES"
+      chown -R ${USER}:staff "${USER_RES}"
+      chmod -R 755 "${USER_RES}"
+
+      rsync -r "${dir}/resources/user/" "${USER_RES}"
+    fi
+
+    if [ -e "${dir}/resources/system" ]; then
+      echo "copying system resources"
+      SYSTEM_RES="/Library/Application Support/${COMPANY_NAME}/${PROJECT_NAME}"
+      mkdir -p "${SYSTEM_RES}"
+      chown -R ${USER}:staff "${SYSTEM_RES}"
+      chmod -R 755 "${SYSTEM_RES}"
+
+      rsync -r "${dir}/resources/system/" "${SYSTEM_RES}"
+    fi
+
+  fi
+done
+
+
+#rm -rf "/tmp/${COMPANY_NAME}"
