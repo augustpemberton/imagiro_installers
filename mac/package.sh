@@ -78,8 +78,8 @@ if [ "$HAS_RESOURCES" = true ]; then
   # Build resources
   pkgbuild --sign "$APPLE_INSTALL_CERT" --root "${PROJECT_ROOT}/resources" \
   --identifier "${BUNDLE_ID}.resources.pkg" --version ${VERSION} \
-  --scripts ${PROJECT_ROOT}/installers/mac/Resources/postinstall \
-  --install-location "/tmp/${COMPANY_NAME}/${RESOURCE_NAME}/resources" ${TMPDIR}/${RESOURCE_NAME}_Resources.pkg
+  --scripts "${PROJECT_ROOT}/installers/mac/Resources/postinstall" \
+  --install-location "/tmp/${COMPANY_NAME}/${RESOURCE_NAME}/resources" "${TMPDIR}/${PROJECT_NAME}_Resources.pkg"
 
   codesign --force -s "$APPLE_APP_CERT" -o runtime --deep --timestamp \
     --digest-algorithm=sha1,sha256 "${TMPDIR}/${PROJECT_NAME}_Resources.pkg"
