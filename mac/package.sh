@@ -36,6 +36,7 @@ build_type()
     binary=$2
     ident=$3
     loc=$4
+    extraSigningArgs=$5
 
     workdir=$TMPDIR/$type
     mkdir -p $workdir
@@ -54,7 +55,7 @@ build_type()
               --install-location "$loc" "$TMPDIR/${PROJECT_NAME}_${type}.pkg" || exit 1
     pkgutil --check-signature "$TMPDIR/${PROJECT_NAME}_${type}.pkg"
 
-    codesign --force -s "$APPLE_APP_CERT" -o runtime --deep --timestamp \
+    codesign --force -s "$APPLE_APP_CERT" -o runtime ${extraSigningArgs} --deep --timestamp \
               --digest-algorithm=sha1,sha256 "$TMPDIR/${PROJECT_NAME}_${type}.pkg"
 
     rm -rf $workdir
@@ -64,28 +65,35 @@ mkdir -p "./temp/"
 
 build_type "VST3" ${PROJECT_ROOT}/bin/VST3/*.vst3 "${BUNDLE_ID}.VST3.pkg" "/Library/Audio/Plug-Ins/VST3"
 build_type "AU" ${PROJECT_ROOT}/bin/AU/*.component "${BUNDLE_ID}.AU.pkg" "/Library/Audio/Plug-Ins/Components"
-build_type "Standalone" ${PROJECT_ROOT}/bin/Standalone/*.app "${BUNDLE_ID}.Standalone.pkg" "/tmp/${COMPANY_NAME}/${RESOURCE_NAME}"
+build_type "Standalone" ${PROJECT_ROOT}/bin/Standalone/*.app "${BUNDLE_ID}.Standalone.pkg" "/tmp/${COMPANY_NAME}/${RESOURCE_NAME}" \
+"--entitlements ${PROJECT_ROOT}/installers/mac/Resources/entitlements.plist"
 
 RESOURCES_DIR="${PROJECT_ROOT}/resources"
 
+# we need to create a file for the resources package to install if there isn't one
+# the resources package contains the necessary postinstall script
+# productbuild won't add the package if is empty or only contains subdirectories
 HAS_RESOURCES=false
-if [ -d $RESOURCES_DIR ]; then
-    HAS_RESOURCES=true
+if [ -e "$RESOURCES_DIR" ] && find "$RESOURCES_DIR" -type f | read; then
+  HAS_RESOURCES=true
 fi
 
-if [ "$HAS_RESOURCES" = true ]; then
-  echo "Using resources"
-  # Build resources
-  pkgbuild --sign "$APPLE_INSTALL_CERT" --root "${PROJECT_ROOT}/resources" \
-  --identifier "${BUNDLE_ID}.resources.pkg" --version ${VERSION} \
-  --scripts "${PROJECT_ROOT}/installers/mac/Resources/postinstall" \
-  --install-location "/tmp/${COMPANY_NAME}/${RESOURCE_NAME}/resources" "${TMPDIR}/${PROJECT_NAME}_Resources.pkg"
-
-  codesign --force -s "$APPLE_APP_CERT" -o runtime --deep --timestamp \
-    --digest-algorithm=sha1,sha256 "${TMPDIR}/${PROJECT_NAME}_Resources.pkg"
-else
-  echo "Not using resources"
+if [ "$HAS_RESOURCES" = false ]; then
+  echo "Creating empty resources for postinstall script"
+  mkdir "$RESOURCES_DIR"
+  mkdir "$RESOURCES_DIR/user"
+  touch "$RESOURCES_DIR/user/config"
+#  date > "$RESOURCES_DIR/user/timestamp"
+  HAS_RESOURCES=true
 fi
+
+pkgbuild --sign "$APPLE_INSTALL_CERT" --root "$RESOURCES_DIR" \
+--identifier "${BUNDLE_ID}.resources.pkg" --version ${VERSION} \
+--scripts "${PROJECT_ROOT}/installers/mac/Resources/postinstall" \
+--install-location "/tmp/${COMPANY_NAME}/${RESOURCE_NAME}/resources" "${TMPDIR}/${PROJECT_NAME}_Resources.pkg"
+
+codesign --force -s "$APPLE_APP_CERT" -o runtime --deep --timestamp \
+  --digest-algorithm=sha1,sha256 "${TMPDIR}/${PROJECT_NAME}_Resources.pkg"
 
 echo --- Sub Packages Created ---
 
