@@ -16,7 +16,6 @@ Compression=zip
 SolidCompression=yes
 LZMAUseSeparateProcess=yes
 LZMANumBlockThreads=6
-DiskSpanning=yes
 
 [UninstallDelete]
 Type: filesandordirs; Name: "{commoncf64}\VST3\{#PluginName}Data"
