@@ -26,3 +26,5 @@ Source: "..\..\build\{#ProjectName}_artefacts\{#BuildType}\Standalone\{#PluginNa
 Source: "..\..\resources\user\*"; DestDir: "{userappdata}\{#Publisher}\{#PluginName}\"; Flags: ignoreversion recursesubdirs skipifsourcedoesntexist;
 Source: "..\..\resources\system\*"; DestDir: "{commonpf}\{#Publisher}\{#PluginName}\"; Flags: ignoreversion recursesubdirs skipifsourcedoesntexist;
 
+[Icons]
+Name: "{#ProjectName}"; Filename: "{commonpf}\{#Publisher}\{#PluginName}\{#PluginName}.exe";
