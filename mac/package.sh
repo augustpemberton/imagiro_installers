@@ -78,12 +78,14 @@ if [ -e "$RESOURCES_DIR" ] && find "$RESOURCES_DIR" -type f | read; then
   HAS_RESOURCES=true
 fi
 
+# if we don't have resources, we need to create a dummy resources package
+# because we're attaching the postinstall script to the resources package, as its the only
+# required install target
 if [ "$HAS_RESOURCES" = false ]; then
   echo "Creating empty resources for postinstall script"
   mkdir "$RESOURCES_DIR"
   mkdir "$RESOURCES_DIR/user"
-  touch "$RESOURCES_DIR/user/config"
-#  date > "$RESOURCES_DIR/user/timestamp"
+  date > "$RESOURCES_DIR/user/timestamp"
   HAS_RESOURCES=true
 fi
 
