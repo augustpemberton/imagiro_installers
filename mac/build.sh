@@ -37,6 +37,9 @@ fi
 
 cd $PROJECT_ROOT
 
+# force env to generate if running locally
+CI=true
+
 # Build the target
 if [ $REBUILD = true ]
   then

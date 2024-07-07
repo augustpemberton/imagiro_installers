@@ -1,12 +1,13 @@
 #!/bin/sh
 
-source .env
+SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
+PROJECT_ROOT="${SCRIPT_DIR}/../.."
+
+source "${PROJECT_ROOT}/.env"
 BUNDLE_ID="com.${COMPANY_NAME}.${PROJECT_NAME}"
 
 OUTPUT_BASE_FILENAME="${PROJECT_NAME}-macOS-${VERSION}"
 
-SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
-PROJECT_ROOT="${SCRIPT_DIR}/../.."
 
 # TODO refactor arguments
 NOTARIZE=true
