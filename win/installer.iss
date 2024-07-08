@@ -27,4 +27,4 @@ Source: "..\..\resources\user\*"; DestDir: "{userappdata}\{#Publisher}\{#Resourc
 Source: "..\..\resources\system\*"; DestDir: "{commonappdata}\{#Publisher}\{#ResourceName}\"; Flags: ignoreversion recursesubdirs skipifsourcedoesntexist;
 
 [Icons]
-Name: "{group}\{#ProjectName}"; Filename: "{commonpf}\{#Publisher}\{#PluginName}\{#PluginName}.exe";
+Name: "{group}\{#PluginName}"; Filename: "{commonpf}\{#Publisher}\{#PluginName}\{#PluginName}.exe";
