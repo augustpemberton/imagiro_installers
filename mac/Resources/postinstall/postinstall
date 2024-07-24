@@ -6,8 +6,9 @@ COMPANY_NAME=imagiro
 # it also moves any user and system resources to the correct locations, and sets correct permissions
 # this is done in postinstall because the installer cannot access both system and user dirs
 
-for dir in /tmp/"$COMPANY_NAME"/*/; do
+for dir in /tmp/"$COMPANY_NAME/"; do
   if [ -e "$dir" ]; then
+    echo "hello! $dir"
     RESOURCE_NAME=$(basename "$dir")
     echo processing "$RESOURCE_NAME"
 
@@ -41,4 +42,4 @@ for dir in /tmp/"$COMPANY_NAME"/*/; do
 done
 
 
-rm -rf "/tmp/${COMPANY_NAME}"
+#rm -rf "/tmp/${COMPANY_NAME}"
