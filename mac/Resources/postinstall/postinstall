@@ -8,7 +8,6 @@ COMPANY_NAME=imagiro
 
 for dir in /tmp/"$COMPANY_NAME/"; do
   if [ -e "$dir" ]; then
-    echo "hello! $dir"
     RESOURCE_NAME=$(basename "$dir")
     echo processing "$RESOURCE_NAME"
 
