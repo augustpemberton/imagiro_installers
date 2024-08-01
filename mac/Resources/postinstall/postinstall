@@ -16,8 +16,8 @@ for dir in *; do
     RESOURCE_NAME=$(basename "$dir")
     echo processing "$RESOURCE_NAME"
 
-    if [ -e "*.app" ]; then
-      for standalone in "*.app"; do
+    if [ -e *.app ]; then
+      for standalone in *.app; do
         echo "copying ${standalone}"
         rsync -ar "${standalone}" "/Applications/"
       done
@@ -27,7 +27,7 @@ for dir in *; do
     echo "setting user resource permissions (${USER_RES})"
     mkdir -p "$USER_RES"
     chown -R ${USER}:staff "${USER_RES}"
-    chmod -R 755 "${USER_RES}"
+    chmod -R 777 "${USER_RES}"
 
     if [ -e "${dir}/resources/user" ]; then
       echo "copying user resources ($USER_RES)"
@@ -38,7 +38,7 @@ for dir in *; do
     echo "setting system resource permissions (${SYSTEM_RES})"
     mkdir -p "${SYSTEM_RES}"
     chown -R ${USER} "${SYSTEM_RES}"
-    chmod -R 755 "${SYSTEM_RES}"
+    chmod -R 777 "${SYSTEM_RES}"
 
     if [ -e "${dir}/resources/system" ]; then
       echo "copying system resources ($SYSTEM_RES)"
@@ -50,4 +50,4 @@ for dir in *; do
 done
 
 
-rm -rf "/tmp/${COMPANY_NAME}"
+#rm -rf "/tmp/${COMPANY_NAME}"
