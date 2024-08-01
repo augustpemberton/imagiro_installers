@@ -2,14 +2,14 @@
 
 [Setup]
 ArchitecturesInstallIn64BitMode=x64
-ArchitecturesAllowed=x64
+ArchitecturesAllowed=x64compatible
 AppName={#PluginName}
 OutputBaseFilename={#PluginName}
 AppCopyright=Copyright (C) {#Year} {#Publisher}
 AppPublisher={#Publisher}
 AppVersion={#Version}
-DefaultDirName="{commoncf64}\VST3\{#PluginName}.vst3"
-DisableDirPage=yes
+DefaultDirName="{commoncf64}\VST3"
+DisableDirPage=no
 LicenseFile="..\License.txt"
 UninstallFilesDir="{commonappdata}\{#PluginName}\uninstall"
 Compression=zip
@@ -18,10 +18,13 @@ LZMAUseSeparateProcess=yes
 LZMANumBlockThreads=6
 
 [UninstallDelete]
-Type: filesandordirs; Name: "{commoncf64}\VST3\{#PluginName}Data"
+Type: filesandordirs; Name: "{app}\{#PluginName}.vst3"
+Type: filesandordirs; Name: "{commonpf}\{#Publisher}\{#PluginName}"
+Type: filesandordirs; Name: "{userappdata}\{#Publisher}\{#ResourceName}"
+Type: filesandordirs; Name: "{commonappdata}\{#Publisher}\{#ResourceName}"
 
 [Files]
-Source: "..\..\build\{#ProjectName}_artefacts\{#BuildType}\VST3\{#PluginName}.vst3\*"; DestDir: "{commoncf64}\VST3\{#PluginName}.vst3\"; Excludes: *.ilk; Flags: ignoreversion recursesubdirs;
+Source: "..\..\build\{#ProjectName}_artefacts\{#BuildType}\VST3\{#PluginName}.vst3\*"; DestDir: "{app}\{#PluginName}.vst3\"; Excludes: *.ilk; Flags: ignoreversion recursesubdirs;
 Source: "..\..\build\{#ProjectName}_artefacts\{#BuildType}\Standalone\{#PluginName}.exe"; DestDir: "{commonpf}\{#Publisher}\{#PluginName}"; Flags: ignoreversion recursesubdirs;
 Source: "..\..\resources\user\*"; DestDir: "{userappdata}\{#Publisher}\{#ResourceName}\"; Flags: ignoreversion recursesubdirs skipifsourcedoesntexist;
 Source: "..\..\resources\system\*"; DestDir: "{commonappdata}\{#Publisher}\{#ResourceName}\"; Flags: ignoreversion recursesubdirs skipifsourcedoesntexist;
