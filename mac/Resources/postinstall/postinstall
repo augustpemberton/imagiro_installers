@@ -29,9 +29,9 @@ for dir in *; do
     chown -R ${USER}:staff "${USER_RES}"
     chmod -R 777 "${USER_RES}"
 
-    if [ -e "${dir}/resources/user" ]; then
+    if [ -e "resources/user" ]; then
       echo "copying user resources ($USER_RES)"
-      rsync -ar --remove-source-files "${dir}/resources/user/" "${USER_RES}"
+      rsync -ar --remove-source-files "resources/user/" "${USER_RES}"
     fi
 
     SYSTEM_RES="/Library/Application Support/${COMPANY_NAME}/${RESOURCE_NAME}"
@@ -40,9 +40,9 @@ for dir in *; do
     chown -R ${USER} "${SYSTEM_RES}"
     chmod -R 777 "${SYSTEM_RES}"
 
-    if [ -e "${dir}/resources/system" ]; then
+    if [ -e "resources/system" ]; then
       echo "copying system resources ($SYSTEM_RES)"
-      rsync -ar --remove-source-files "${dir}/resources/system/" "${SYSTEM_RES}"
+      rsync -ar --remove-source-files "resources/system/" "${SYSTEM_RES}"
     fi
 
     popd
@@ -50,4 +50,4 @@ for dir in *; do
 done
 
 
-rm -rf "/tmp/${COMPANY_NAME}"
+#rm -rf "/tmp/${COMPANY_NAME}"
