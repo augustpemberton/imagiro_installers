@@ -2,43 +2,52 @@
 
 COMPANY_NAME=imagiro
 
+USER=$(whoami)
+
 # this script moves the standalone version of the plugin to the /Applications directory
 # it also moves any user and system resources to the correct locations, and sets correct permissions
 # this is done in postinstall because the installer cannot access both system and user dirs
 
-for dir in /tmp/"$COMPANY_NAME/"; do
+cd "/tmp/${COMPANY_NAME}"
+
+for dir in *; do
   if [ -e "$dir" ]; then
+    pushd "$dir"
     RESOURCE_NAME=$(basename "$dir")
     echo processing "$RESOURCE_NAME"
 
-    for standalone in "${dir}"*.app; do
-      echo "copying ${standalone}"
-      rsync -ar "${standalone}" "/Applications/"
-    done
+    if [ -e "*.app" ]; then
+      for standalone in "*.app"; do
+        echo "copying ${standalone}"
+        rsync -ar "${standalone}" "/Applications/"
+      done
+    fi
+
+    USER_RES="${HOME}/Library/Application Support/${COMPANY_NAME}/${RESOURCE_NAME}"
+    echo "setting user resource permissions (${USER_RES})"
+    mkdir -p "$USER_RES"
+    chown -R ${USER}:staff "${USER_RES}"
+    chmod -R 755 "${USER_RES}"
 
     if [ -e "${dir}/resources/user" ]; then
-      echo "copying user resources"
-      USER_RES="${HOME}/Library/Application Support/${COMPANY_NAME}/${RESOURCE_NAME}"
-      mkdir -p "$USER_RES"
-      chown -R ${USER}:staff "${USER_RES}"
+      echo "copying user resources ($USER_RES)"
       rsync -ar --remove-source-files "${dir}/resources/user/" "${USER_RES}"
-
-      chmod -R 777 "${USER_RES}"
     fi
+
+    SYSTEM_RES="/Library/Application Support/${COMPANY_NAME}/${RESOURCE_NAME}"
+    echo "setting system resource permissions (${SYSTEM_RES})"
+    mkdir -p "${SYSTEM_RES}"
+    chown -R ${USER} "${SYSTEM_RES}"
+    chmod -R 755 "${SYSTEM_RES}"
 
     if [ -e "${dir}/resources/system" ]; then
-      echo "copying system resources"
-      SYSTEM_RES="/Library/Application Support/${COMPANY_NAME}/${RESOURCE_NAME}"
-      mkdir -p "${SYSTEM_RES}"
-      chown -R ${USER} "${SYSTEM_RES}"
-
+      echo "copying system resources ($SYSTEM_RES)"
       rsync -ar --remove-source-files "${dir}/resources/system/" "${SYSTEM_RES}"
-
-      chmod -R 777 "${SYSTEM_RES}"
     fi
 
+    popd
   fi
 done
 
 
-#rm -rf "/tmp/${COMPANY_NAME}"
+rm -rf "/tmp/${COMPANY_NAME}"
