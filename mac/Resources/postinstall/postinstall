@@ -50,4 +50,4 @@ for dir in *; do
 done
 
 
-#rm -rf "/tmp/${COMPANY_NAME}"
+rm -rf "/tmp/${COMPANY_NAME}"
