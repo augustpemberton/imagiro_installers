@@ -1,7 +1,7 @@
 #define Year GetDateTimeString("yyyy","","")
 
 [Setup]
-ArchitecturesInstallIn64BitMode=x64
+ArchitecturesInstallIn64BitMode=x64compatible
 ArchitecturesAllowed=x64compatible
 AppName={#PluginName}
 OutputBaseFilename={#PluginName}
