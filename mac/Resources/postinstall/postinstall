@@ -8,6 +8,10 @@ USER=$(whoami)
 # it also moves any user and system resources to the correct locations, and sets correct permissions
 # this is done in postinstall because the installer cannot access both system and user dirs
 
+if [ ! -e "/tmp/${COMPANY_NAME}" ]; then
+  exit 1
+fi
+
 cd "/tmp/${COMPANY_NAME}"
 
 for dir in *; do
@@ -24,30 +28,34 @@ for dir in *; do
     fi
 
     USER_RES="${HOME}/Library/Application Support/${COMPANY_NAME}/${RESOURCE_NAME}"
-    echo "setting user resource permissions (${USER_RES})"
     mkdir -p "$USER_RES"
-    chown -R ${USER}:staff "${USER_RES}"
-    chmod -R 777 "${USER_RES}"
+    chown -R ${USER}:staff "$USER_RES"
 
     if [ -e "resources/user" ]; then
       echo "copying user resources ($USER_RES)"
       rsync -ar --remove-source-files "resources/user/" "${USER_RES}"
     fi
 
+    # set permissions after copy
+    echo "setting user resource permissions (${USER_RES})"
+    chmod -R 777 "$USER_RES"
+
     SYSTEM_RES="/Library/Application Support/${COMPANY_NAME}/${RESOURCE_NAME}"
-    echo "setting system resource permissions (${SYSTEM_RES})"
     mkdir -p "${SYSTEM_RES}"
     chown -R ${USER} "${SYSTEM_RES}"
-    chmod -R 777 "${SYSTEM_RES}"
 
     if [ -e "resources/system" ]; then
       echo "copying system resources ($SYSTEM_RES)"
       rsync -ar --remove-source-files "resources/system/" "${SYSTEM_RES}"
     fi
 
+    # set permissions after copy
+    echo "setting system resource permissions (${SYSTEM_RES})"
+    chmod -R 777 "${SYSTEM_RES}"
+
     popd
   fi
 done
 
 
-rm -rf "/tmp/${COMPANY_NAME}"
+#rm -rf "/tmp/${COMPANY_NAME}"
