@@ -24,7 +24,7 @@ Type: filesandordirs; Name: "{userappdata}\{#Publisher}\{#ResourceName}"
 Type: filesandordirs; Name: "{commonappdata}\{#Publisher}\{#ResourceName}"
 
 [Files]
-Source: "..\..\build\{#ProjectName}_artefacts\{#BuildType}\VST3\{#PluginName}.vst3\*"; DestDir: "{app}\{#PluginName}.vst3\"; Excludes: *.ilk; Flags: ignoreversion recursesubdirs;
+Source: "..\..\build\{#ProjectName}_artefacts\{#BuildType}\VST3\{#PluginName}.vst3\*"; DestDir: "{app}\"; Excludes: *.ilk; Flags: ignoreversion recursesubdirs;
 Source: "..\..\build\{#ProjectName}_artefacts\{#BuildType}\Standalone\{#PluginName}.exe"; DestDir: "{commonpf}\{#Publisher}\{#PluginName}"; Flags: ignoreversion recursesubdirs;
 Source: "..\..\resources\user\*"; DestDir: "{userappdata}\{#Publisher}\{#ResourceName}\"; Flags: ignoreversion recursesubdirs skipifsourcedoesntexist;
 Source: "..\..\resources\system\*"; DestDir: "{commonappdata}\{#Publisher}\{#ResourceName}\"; Flags: ignoreversion recursesubdirs skipifsourcedoesntexist;
