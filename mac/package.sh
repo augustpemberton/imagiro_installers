@@ -66,7 +66,7 @@ mkdir -p "./temp/"
 
 build_type "VST3" ${PROJECT_ROOT}/bin/VST3/*.vst3 "${BUNDLE_ID}.VST3.pkg" "/Library/Audio/Plug-Ins/VST3"
 build_type "AU" ${PROJECT_ROOT}/bin/AU/*.component "${BUNDLE_ID}.AU.pkg" "/Library/Audio/Plug-Ins/Components"
-build_type "Standalone" ${PROJECT_ROOT}/bin/Standalone/*.app "${BUNDLE_ID}.Standalone.pkg" "/tmp/${COMPANY_NAME}/${RESOURCE_NAME}" \
+build_type "Standalone" ${PROJECT_ROOT}/bin/Standalone/*.app "${BUNDLE_ID}.Standalone.pkg" "/Applications" \
 "--entitlements ${PROJECT_ROOT}/installers/mac/Resources/entitlements.plist"
 
 RESOURCES_DIR="${PROJECT_ROOT}/resources"

@@ -20,13 +20,6 @@ for dir in *; do
     RESOURCE_NAME=$(basename "$dir")
     echo processing "$RESOURCE_NAME"
 
-    if [ -e *.app ]; then
-      for standalone in *.app; do
-        echo "copying ${standalone}"
-        rsync -ar "${standalone}" "/Applications/"
-      done
-    fi
-
     USER_RES="${HOME}/Library/Application Support/${COMPANY_NAME}/${RESOURCE_NAME}"
     mkdir -p "$USER_RES"
     chown -R ${USER}:staff "$USER_RES"
