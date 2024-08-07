@@ -8,7 +8,7 @@ OutputBaseFilename={#PluginName}
 AppCopyright=Copyright (C) {#Year} {#Publisher}
 AppPublisher={#Publisher}
 AppVersion={#Version}
-DefaultDirName="{commoncf64}\VST3"
+DefaultDirName="{commoncf64}\VST3\{#PluginName}.vst3"
 DisableDirPage=no
 LicenseFile="..\License.txt"
 UninstallFilesDir="{commonappdata}\{#PluginName}\uninstall"
@@ -24,7 +24,7 @@ Type: filesandordirs; Name: "{userappdata}\{#Publisher}\{#ResourceName}"
 Type: filesandordirs; Name: "{commonappdata}\{#Publisher}\{#ResourceName}"
 
 [Files]
-Source: "..\..\build\{#ProjectName}_artefacts\{#BuildType}\VST3\{#PluginName}.vst3\*"; DestDir: "{app}\{#PluginName}.vst3\"; Flags: ignoreversion recursesubdirs; Excludes: *.ilk;
+Source: "..\..\build\{#ProjectName}_artefacts\{#BuildType}\VST3\{#PluginName}.vst3\*"; DestDir: "{app}\"; Flags: ignoreversion recursesubdirs; Excludes: *.ilk;
 Source: "..\..\build\{#ProjectName}_artefacts\{#BuildType}\Standalone\{#PluginName}.exe"; DestDir: "{commonpf}\{#Publisher}\{#PluginName}"; Flags: ignoreversion recursesubdirs;
 Source: "..\..\resources\user\*"; DestDir: "{userappdata}\{#Publisher}\{#ResourceName}\"; Flags: ignoreversion recursesubdirs skipifsourcedoesntexist;
 Source: "..\..\resources\system\*"; DestDir: "{commonappdata}\{#Publisher}\{#ResourceName}\"; Flags: ignoreversion recursesubdirs skipifsourcedoesntexist;
