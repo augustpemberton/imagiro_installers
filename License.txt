@@ -1,6 +1,6 @@
-End-User License Agreement (EULA) for "imagiro piano" Audio Plug-in Software
+End-User License Agreement (EULA) for "shearwater" Audio Plug-in Software
 
-PLEASE READ THIS END-USER LICENSE AGREEMENT ("EULA") CAREFULLY BEFORE INSTALLING OR USING "imagiro piano" AUDIO PLUG-IN SOFTWARE (THE "SOFTWARE"). BY INSTALLING OR USING THE SOFTWARE, YOU AGREE TO BE BOUND BY THE TERMS AND CONDITIONS OF THIS EULA. IF YOU DO NOT AGREE TO THE TERMS OF THIS EULA, DO NOT INSTALL OR USE THE SOFTWARE.
+PLEASE READ THIS END-USER LICENSE AGREEMENT ("EULA") CAREFULLY BEFORE INSTALLING OR USING "shearwater piano" AUDIO PLUG-IN SOFTWARE (THE "SOFTWARE"). BY INSTALLING OR USING THE SOFTWARE, YOU AGREE TO BE BOUND BY THE TERMS AND CONDITIONS OF THIS EULA. IF YOU DO NOT AGREE TO THE TERMS OF THIS EULA, DO NOT INSTALL OR USE THE SOFTWARE.
 
 1. License Grant. Subject to the terms and conditions of this EULA, imagiro ("Licensor") hereby grants you a non-exclusive, non-transferable, limited license to use the Software solely for your personal or business purposes. The Software is licensed, not sold, to you.
 
