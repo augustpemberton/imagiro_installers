@@ -42,21 +42,39 @@ build_type()
     workdir=$TMPDIR/$type
     mkdir -p $workdir
 
-    if [[ -d "$binary/Contents" ]]; then
-      codesign --force -s "$APPLE_APP_CERT" -o runtime --deep --timestamp --digest-algorithm=sha1,sha256 "$binary"
+    # Special handling for AAX
+    if [[ "$type" == "AAX" ]]; then
+        echo "Signing AAX with WRAPTOOL..."
+        wraptool sign --verbose \
+            --account $WRAPTOOL_ACC \
+            --password $WRAPTOOL_PW \
+            --wcguid D469BB60-B2F7-11EF-8D8C-00505692C25A \
+            --signid "$APPLE_APP_CERT" \
+            --dsigharden \
+            --dsig1-compat off \
+            --in "$binary" \
+            --out "$binary" || exit 1
+
+        echo "Verifying WRAPTOOL signature..."
+        wraptool verify --verbose --in "$binary"
+
+    elif [[ -d "$binary/Contents" ]]; then
+      codesign --force -s "$APPLE_APP_CERT" -o runtime --deep --timestamp \
+              --options=runtime --entitlements "${PROJECT_ROOT}/installers/mac/Resources/entitlements.plist" \
+              --digest-algorithm=sha1,sha256 "$binary"
     else
-      echo "no contents - not signing binary"
-      echo "$binary/Contents"
+      echo "skipping codesigning"
     fi
 
     cp -r "$binary" "$workdir"
-    ls -l $workdir
 
     pkgbuild --sign "$APPLE_INSTALL_CERT" --root $workdir --identifier $ident --version ${VERSION} \
               --install-location "$loc" "$TMPDIR/${PROJECT_NAME}_${type}.pkg" || exit 1
     pkgutil --check-signature "$TMPDIR/${PROJECT_NAME}_${type}.pkg"
 
+    echo "codesigning pkg"
     codesign --force -s "$APPLE_APP_CERT" -o runtime ${extraSigningArgs} --deep --timestamp \
+              --options=runtime --entitlements "${PROJECT_ROOT}/installers/mac/Resources/entitlements.plist" \
               --digest-algorithm=sha1,sha256 "$TMPDIR/${PROJECT_NAME}_${type}.pkg"
 
     rm -rf $workdir
@@ -66,8 +84,9 @@ mkdir -p "./temp/"
 
 build_type "VST3" ${PROJECT_ROOT}/bin/VST3/*.vst3 "${BUNDLE_ID}.VST3.pkg" "/Library/Audio/Plug-Ins/VST3"
 build_type "AU" ${PROJECT_ROOT}/bin/AU/*.component "${BUNDLE_ID}.AU.pkg" "/Library/Audio/Plug-Ins/Components"
+build_type "AAX" ${PROJECT_ROOT}/bin/AAX/*.aaxplugin "${BUNDLE_ID}.AAX.pkg" "/Library/Application Support/Avid/Audio/Plug-Ins"
 build_type "Standalone" ${PROJECT_ROOT}/bin/Standalone/*.app "${BUNDLE_ID}.Standalone.pkg" "/Applications" \
-"--entitlements ${PROJECT_ROOT}/installers/mac/Resources/entitlements.plist"
+           "--entitlements ${PROJECT_ROOT}/installers/mac/Resources/entitlements.plist"
 
 RESOURCES_DIR="${PROJECT_ROOT}/resources"
 
@@ -101,7 +120,7 @@ codesign --force -s "$APPLE_APP_CERT" -o runtime --deep --timestamp \
 echo --- Sub Packages Created ---
 
 PKG_REFS=""
-for type in VST3 AU Standalone; do
+for type in VST3 AU AAX Standalone; do
   PKG_REFS="$PKG_REFS
    <pkg-ref id=\"$BUNDLE_ID.$type.pkg\"/>"
 done
@@ -112,7 +131,7 @@ if [ "$HAS_RESOURCES" = true ]; then
 fi
 
 PKG_LINE_CHOICES=""
-for type in VST3 AU Standalone; do
+for type in VST3 AU AAX Standalone; do
   PKG_LINE_CHOICES="$PKG_LINE_CHOICES
    <line choice=\"$BUNDLE_ID.$type.pkg\"/>"
 done
@@ -123,7 +142,7 @@ if [ "$HAS_RESOURCES" = true ]; then
 fi
 
 PKG_CHOICES=""
-for type in VST3 AU Standalone; do
+for type in VST3 AU AAX Standalone; do
   PKG_CHOICES="$PKG_CHOICES
   <choice id=\"$BUNDLE_ID.$type.pkg\"
     visible=\"true\" start_selected=\"true\" title=\"${PLUGIN_NAME} - $type\">\
@@ -165,8 +184,9 @@ cat > $TMPDIR/distribution.xml << XMLEND
 XMLEND
 
 pushd ${TMPDIR}
+echo "$OUTPUT_BASE_FILENAME"
 productbuild --sign "$APPLE_INSTALL_CERT" --distribution "distribution.xml" \
-            --package-path "." --resources ${PROJECT_ROOT}/installers "$OUTPUT_BASE_FILENAME.pkg"
+            --package-path "." --resources "${PROJECT_ROOT}/installers" "$OUTPUT_BASE_FILENAME.pkg"
 
 codesign --force -s "$APPLE_APP_CERT" -o runtime --deep --timestamp \
   --digest-algorithm=sha1,sha256 "$OUTPUT_BASE_FILENAME.pkg"
