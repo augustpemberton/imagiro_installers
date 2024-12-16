@@ -71,7 +71,7 @@ build_type()
             --dsigharden \
             --dsig1-compat off \
             --in "$binary" \
-            --out "$binary" >>package.log 2>&1
+            --out "$binary" >>package.log 2>&1 || exit 1
 
         echo "verifying wraptool signature..." >> package.log
         wraptool verify --verbose --in "$binary" >>package.log 2>&1

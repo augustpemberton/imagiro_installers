@@ -52,24 +52,30 @@ else
   echo "skipping build"
 fi
 
+cd "$SCRIPT_DIR/../"
+
 # package
 mkdir -p output
 
 if [ "$build_aax" = true ] ; then
-  bash $os_dir/package.sh --aax ./output
+  bash installers/$os_dir/package.sh --aax "$SCRIPT_DIR/../output"
 else
-  bash $os_dir/package.sh ./output
+  bash installers/$os_dir/package.sh "$SCRIPT_DIR/../output"
 fi
 
-cd "$SCRIPT_DIR/../"
 source ".env"
 
 echo "uploading to DO Spaces..."
 
+output_file="output/$PROJECT_NAME-win-$VERSION.exe"
+if [[ $OSTYPE == 'darwin'* ]]; then
+  output_file="output/$PROJECT_NAME-macOS-$VERSION.dmg"
+fi
 
-aws s3 cp "output/$PROJECT_NAME-win-$VERSION.exe" s3://imagiro/ \
+aws s3 cp "$output_file" s3://imagiro/ \
     --endpoint=https://imagiro.nyc3.digitaloceanspaces.com \
-    --profile spaces
+    --profile spaces \
+    --acl public-read
 
 echo "notifying server..."
 
