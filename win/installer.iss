@@ -1,5 +1,8 @@
 #define Year GetDateTimeString("yyyy","","")
 
+; Add flag definition at the top
+#define IncludeAAX GetCmdLineParamValue("include_aax")
+
 [Setup]
 ArchitecturesInstallIn64BitMode=x64compatible
 ArchitecturesAllowed=x64compatible
@@ -23,21 +26,27 @@ Name: "custom"; Description: "Custom installation"; Flags: iscustom
 
 [Components]
 Name: "vst3"; Description: "VST3 Plugin"; Types: full custom
+#if IncludeAAX == "true"
 Name: "aax"; Description: "AAX Plugin"; Types: full custom
+#endif
 Name: "standalone"; Description: "Standalone Application"; Types: full custom
 
-[UninstallDeletescc]
+[UninstallDelete]
 Type: filesandordirs; Name: "{app}\{#PluginName}.vst3"
 Type: filesandordirs; Name: "{commonpf}\{#Publisher}\{#PluginName}"
 Type: filesandordirs; Name: "{userappdata}\{#Publisher}\{#ResourceName}"
 Type: filesandordirs; Name: "{commonappdata}\{#Publisher}\{#ResourceName}"
+#if IncludeAAX == "true"
 Type: filesandordirs; Name: "{commonpf64}\Common Files\Avid\Audio\Plug-Ins\{#PluginName}.aaxplugin"
+#endif
 
 [Files]
 Source: "..\..\build\{#ProjectName}_artefacts\{#BuildType}\VST3\{#PluginName}.vst3\*"; DestDir: "{app}\"; Flags: ignoreversion recursesubdirs; Excludes: *.ilk; Components: vst3
+#if IncludeAAX == "true"
 Source: "..\..\build\{#ProjectName}_artefacts\{#BuildType}\AAX\{#PluginName}.aaxplugin\*"; DestDir: "{commonpf64}\Common Files\Avid\Audio\Plug-Ins\{#PluginName}.aaxplugin\"; Flags: ignoreversion recursesubdirs; Excludes: *.ilk; Components: aax
+#endif
 Source: "..\..\build\{#ProjectName}_artefacts\{#BuildType}\Standalone\{#PluginName}.exe"; DestDir: "{commonpf}\{#Publisher}\{#PluginName}"; Flags: ignoreversion recursesubdirs; Components: standalone
-Source: "..\..\resources\user\*"; DestDir: "{userappdata}\{#Publisher}\{#ResourceName}\"; Flags: ignoreversion recursesubdirs skipifsourcedoesntexist; Permissions: everyone-full
+        Source: "..\..\resources\user\*"; DestDir: "{userappdata}\{#Publisher}\{#ResourceName}\"; Flags: ignoreversion recursesubdirs skipifsourcedoesntexist; Permissions: everyone-full
 Source: "..\..\resources\system\*"; DestDir: "{commonappdata}\{#Publisher}\{#ResourceName}\"; Flags: ignoreversion recursesubdirs skipifsourcedoesntexist; Permissions: everyone-full
 
 [Icons]

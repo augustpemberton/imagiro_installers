@@ -1,7 +1,6 @@
 #!/bin/sh
 
 REBUILD=true
-NOTARIZE=true
 
 # TODO refactor argument parsing
 
@@ -19,13 +18,6 @@ if [ "$1" = "-nb" ]
     echo "Not rebuilding"
     shift
     REBUILD=false
-fi
-
-if [ "$1" = "-nn" ]
-  then
-    echo "Not notarizing"
-    shift
-    NOTARIZE=false
 fi
 
 SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
