@@ -1,23 +1,25 @@
 #!/usr/bin/env bash
 
+export MSYS_NO_PATHCONV=1
+
 SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 cd $SCRIPT_DIR
 
-build_aax=''
+build_aax='true'
 skip_build=''
 verbose=''
 
 while [[ $# -gt 0 ]]; do
     case "$1" in
-        --aax)
-            build_aax='true'
+        --skip-aax)
+            build_aax=''
             shift
             ;;
         -v|--verbose)
             verbose='true'
             shift
             ;;
-        -sb|--skip-build)
+        --skip-build)
             skip_build='true'
             shift
             ;;
@@ -26,6 +28,10 @@ while [[ $# -gt 0 ]]; do
             ;;
     esac
 done
+
+if [ "$build_aax" != 'true' ]; then
+  echo "skipping aax"
+fi
 
 os_dir=$([[ "$OSTYPE" == "darwin"* ]] && echo "mac" || echo "win")
 output_redirect=$([[ "$verbose" = "true" ]] && echo "" || echo ">/dev/null 2>&1")
@@ -55,12 +61,13 @@ else
   bash $os_dir/package.sh ./output
 fi
 
-source "$SCRIPT_DIR/../.env"
+cd "$SCRIPT_DIR/../"
+source ".env"
 
 echo "uploading to DO Spaces..."
 
-aws s3 cp ./output/ s3://imagiro/ \
-    --recursive \
+
+aws s3 cp "output/$PROJECT_NAME-win-$VERSION.exe" s3://imagiro/ \
     --endpoint=https://imagiro.nyc3.digitaloceanspaces.com \
     --profile spaces
 

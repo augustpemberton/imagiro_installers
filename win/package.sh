@@ -23,33 +23,38 @@ SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 PROJECT_ROOT="${SCRIPT_DIR}/../.."
 
 cd $PROJECT_ROOT
+source .env
 
 # generate EULA
-installers/process-template.sh "$PROJECT_NAME" "installers/License_template.txt" "installers/License.txt"
+echo "processing license template"
+installers/process-template.sh "$PROJECT_NAME" "installers/License_template.txt" "installers/License.txt">>package.log
 
 # sign AAX
 if [ "$build_aax" = true ] ; then
   aax_binary="build/${PROJECT_NAME}_artefacts/Release/AAX/${PLUGIN_NAME}.aaxplugin"
 
-  echo "Signing AAX with WRAPTOOL: $aax_binary"
+  echo "signing AAX with wraptool"
   wraptool sign --verbose \
       --account $WRAPTOOL_ACC \
       --password $WRAPTOOL_PW \
       --wcguid D469BB60-B2F7-11EF-8D8C-00505692C25A \
-      --keyfile "C:\Users\August\imagiroAAX.pfx" \
-      --keypassword "Dd7f715fd1" \
+      --keyfile "$KEYFILE" \
+      --keypassword "$KEYPASS" \
       --extrasigningoptions "digest_sha256" \
       --in "$aax_binary" \
-      --out "$aax_binary"
+      --out "$aax_binary">>package.log
 fi
 
+export MSYS_NO_PATHCONV=1
+
+echo "creating innosetup installer..."
 # create installer
 iscc installers/win/installer.iss \
-  //O"$output_dir" \
-  //DProjectName="$PROJECT_NAME" \
+  /O"$output_dir" \
+  /DProjectName="$PROJECT_NAME" \
   /DPluginName="$PLUGIN_NAME" \
-  //DVersion="$VERSION" \
-  //DPublisher="$COMPANY_NAME" \
-  //DBuildType=Release \
-  //DResourceName="$RESOURCE_NAME" \
-  //Dinclude_aax="$aax"
+  /DVersion="$VERSION" \
+  /DPublisher="$COMPANY_NAME" \
+  /DBuildType=Release \
+  /DResourceName="$RESOURCE_NAME" \
+  /DIncludeAAX="$build_aax">>pacakge.log

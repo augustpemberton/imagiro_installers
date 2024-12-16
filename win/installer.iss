@@ -1,13 +1,10 @@
 #define Year GetDateTimeString("yyyy","","")
 
-; Add flag definition at the top
-#define IncludeAAX GetCmdLineParamValue("include_aax")
-
 [Setup]
 ArchitecturesInstallIn64BitMode=x64compatible
 ArchitecturesAllowed=x64compatible
 AppName={#PluginName}
-OutputBaseFilename={#PluginName}-{#Version}
+OutputBaseFilename={#ProjectName}-win-{#Version}
 AppCopyright=Copyright (C) {#Year} {#Publisher}
 AppPublisher={#Publisher}
 AppVersion={#Version}
