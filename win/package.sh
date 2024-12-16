@@ -57,4 +57,4 @@ iscc installers/win/installer.iss \
   /DPublisher="$COMPANY_NAME" \
   /DBuildType=Release \
   /DResourceName="$RESOURCE_NAME" \
-  /DIncludeAAX="$build_aax">>pacakge.log
+  /DIncludeAAX="$build_aax">>package.log
