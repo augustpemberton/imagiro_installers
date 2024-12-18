@@ -4,28 +4,9 @@ REBUILD=true
 
 # TODO refactor argument parsing
 
-BUILD_TYPE=$1
-if [ -z "$BUILD_TYPE" ]; then
-  BUILD_TYPE=Release
-fi
-shift
-
-PROJECT_ROOT=$1
-shift
-
-if [ "$1" = "-nb" ]
-  then
-    echo "Not rebuilding"
-    shift
-    REBUILD=false
-fi
-
+BUILD_TYPE=Release
 SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
-
-if [ -z "$2" ]
-  then
-    PROJECT_ROOT="${SCRIPT_DIR}/../.."
-fi
+PROJECT_ROOT="${SCRIPT_DIR}/../.."
 
 cd $PROJECT_ROOT
 
