@@ -43,6 +43,7 @@ else
   source ~/sign-creds
 fi
 
+printf "\n\nBUILD STARTED ===================================================\n\n" >> build.log
 
 # build
 if [ "$skip_build" != true ]; then
@@ -57,10 +58,12 @@ cd "$SCRIPT_DIR/../"
 # package
 mkdir -p output
 
+printf "\n\nPACKAGING STARTED ===================================================\n\n" >> package.log
+
 if [ "$build_aax" = true ] ; then
-  bash installers/$os_dir/package.sh --aax "$SCRIPT_DIR/../output"
+  bash installers/$os_dir/package.sh --aax "./output"
 else
-  bash installers/$os_dir/package.sh "$SCRIPT_DIR/../output"
+  bash installers/$os_dir/package.sh "./output"
 fi
 
 source ".env"
