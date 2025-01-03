@@ -37,7 +37,7 @@ if [ "$build_aax" = true ] ; then
   wraptool sign --verbose \
       --account $WRAPTOOL_ACC \
       --password $WRAPTOOL_PW \
-      --wcguid D469BB60-B2F7-11EF-8D8C-00505692C25A \
+      --wcguid $WRAPTOOL_ID \
       --keyfile "$KEYFILE" \
       --keypassword "$KEYPASS" \
       --extrasigningoptions "digest_sha256" \

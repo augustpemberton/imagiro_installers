@@ -66,7 +66,7 @@ build_type()
         wraptool sign --verbose \
             --account $WRAPTOOL_ACC \
             --password $WRAPTOOL_PW \
-            --wcguid D469BB60-B2F7-11EF-8D8C-00505692C25A \
+            --wcguid $WRAPTOOL_ID \
             --signid "$APPLE_APP_CERT" \
             --dsigharden \
             --dsig1-compat off \
