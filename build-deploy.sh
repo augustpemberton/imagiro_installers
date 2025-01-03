@@ -46,6 +46,7 @@ fi
 if [ "$skip_build" != true ]; then
   echo "building UI..."
   cd ../src/ui/src/
+  yarn || exit 1
   yarn build || exit 1
   echo "UI built"
 fi
@@ -57,7 +58,7 @@ printf "\n\nBUILD STARTED ===================================================\n\
 # build
 if [ "$skip_build" != true ]; then
   echo "building..."
-  bash $os_dir/build.sh $output_redirect
+  bash $os_dir/build.sh $output_redirect || exit 1
 else
   echo "skipping build"
 fi
@@ -70,18 +71,18 @@ mkdir -p output
 printf "\n\nPACKAGING STARTED ===================================================\n\n" >> package.log
 
 if [ "$build_aax" = true ] ; then
-  bash installers/$os_dir/package.sh --aax "./output"
+  bash installers/$os_dir/package.sh --aax "./output" || exit 1
 else
-  bash installers/$os_dir/package.sh "./output"
+  bash installers/$os_dir/package.sh "./output" || exit 1
 fi
 
 source ".env"
 
 echo "uploading to DO Spaces..."
 
-output_file="output/$PROJECT_NAME-win-$VERSION.exe"
+output_file="output/$PRODUCT_SLUG-win-$VERSION.exe"
 if [[ $OSTYPE == 'darwin'* ]]; then
-  output_file="output/$PROJECT_NAME-macOS-$VERSION.dmg"
+  output_file="output/$PRODUCT_SLUG-macOS-$VERSION.dmg"
 fi
 
 aws s3 cp "$output_file" s3://imagiro/ \
@@ -91,7 +92,7 @@ aws s3 cp "$output_file" s3://imagiro/ \
 
 echo "notifying server..."
 
-curl -s -o /dev/null -d "key=$IMAGIRO_CI_KEY&version=$VERSION&slug=$PROJECT_NAME" \
+curl -s -o /dev/null -d "key=$IMAGIRO_CI_KEY&version=$VERSION&slug=$PRODUCT_SLUG" \
   -H "Content-Type: application/x-www-form-urlencoded" \
   -X POST https://imagi.ro/api/versions/new
 

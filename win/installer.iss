@@ -4,7 +4,7 @@
 ArchitecturesInstallIn64BitMode=x64compatible
 ArchitecturesAllowed=x64compatible
 AppName={#PluginName}
-OutputBaseFilename={#ProjectName}-win-{#Version}
+OutputBaseFilename={#ProductSlug}-win-{#Version}
 AppCopyright=Copyright (C) {#Year} {#Publisher}
 AppPublisher={#Publisher}
 AppVersion={#Version}
