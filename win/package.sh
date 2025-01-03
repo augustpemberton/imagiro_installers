@@ -52,6 +52,7 @@ echo "creating innosetup installer..."
 iscc installers/win/installer.iss \
   /O"$output_dir" \
   /DProjectName="$PROJECT_NAME" \
+  /DProductSlug="$PRODUCT_SLUG" \
   /DPluginName="$PLUGIN_NAME" \
   /DVersion="$VERSION" \
   /DPublisher="$COMPANY_NAME" \
