@@ -43,15 +43,15 @@ else
   source ~/sign-creds
 fi
 
-if [ "$skip_build" != true ]; then
+if [ "$skip_build" != true ] && [ -d "../src/ui/src" ]; then
   echo "building UI..."
   cd ../src/ui/src/
   yarn || exit 1
   yarn build || exit 1
   echo "UI built"
+  cd ../../../installers
 fi
 
-cd ../../../installers
 
 printf "\n\nBUILD STARTED ===================================================\n\n" >> build.log
 
