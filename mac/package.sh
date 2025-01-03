@@ -259,6 +259,8 @@ if [ "$NOTARIZE" = true ]; then
  # Print success message if both operations succeeded
  if [ $NOTARIZE_RESULT -eq 0 ]; then
    echo "notarization successful!"
+ else
+   exit 1
  fi
 fi
 
