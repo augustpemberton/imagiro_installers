@@ -46,6 +46,7 @@ fi
 if [ "$skip_build" != true ]; then
   echo "building UI..."
   cd ../src/ui/src/
+  yarn || exit 1
   yarn build || exit 1
   echo "UI built"
 fi
