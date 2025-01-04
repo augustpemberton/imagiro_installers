@@ -37,6 +37,15 @@ Type: filesandordirs; Name: "{commonappdata}\{#Publisher}\{#ResourceName}"
 Type: filesandordirs; Name: "{commonpf64}\Common Files\Avid\Audio\Plug-Ins\{#PluginName}.aaxplugin"
 #endif
 
+[InstallDelete]
+; Add this line to remove the incorrectly created directory
+Type: filesandordirs; Name: "{commonpf}\{#Publisher}\{#PluginName}\{#PluginName}.exe"
+Type: filesandordirs; Name: "{app}\{#PluginName}.vst3"
+Type: filesandordirs; Name: "{commonpf}\{#Publisher}\{#PluginName}"
+#if IncludeAAX == "true"
+Type: filesandordirs; Name: "{commonpf64}\Common Files\Avid\Audio\Plug-Ins\{#PluginName}.aaxplugin"
+#endif
+
 [Files]
 Source: "..\..\build\{#ProjectName}_artefacts\{#BuildType}\VST3\{#PluginName}.vst3\*"; DestDir: "{app}\"; Flags: ignoreversion recursesubdirs; Excludes: *.ilk; Components: vst3
 #if IncludeAAX == "true"
