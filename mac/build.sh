@@ -20,7 +20,7 @@ if [ $REBUILD = true ]
     mkdir -p build
     cmake -B ./build -G Ninja -DCMAKE_BUILD_TYPE="$BUILD_TYPE" -DCMAKE_C_COMPILER_LAUNCHER=ccache -DCMAKE_CXX_COMPILER_LAUNCHER=ccache -DCMAKE_OSX_ARCHITECTURES="arm64;x86_64"
     source .env
-    cmake --build ./build --target "${PROJECT_NAME}_All" --config "${BUILD_TYPE}" --parallel 4
+    cmake --build ./build --target "${PROJECT_NAME}_All" --config "${BUILD_TYPE}" --parallel 4 || exit 1
 fi
 
 # move build artefacts to /bin to make things easier for packaging
