@@ -37,6 +37,7 @@ python "%root%\aax-signtool.py"
 set /p args=<args.tmp
 echo Patched signtool: Filtered arguments: %args%
 set file="%args%"
+del args.tmp
 
 echo Patched signtool: File to sign: %file%
 
