@@ -67,7 +67,7 @@ if [ "$build_aax" = true ] ; then
       --password $WRAPTOOL_PW \
       --wcguid $WRAPTOOL_ID \
       --in "$aax_binary" \
-      --out "$aax_binary"
+      --out "$aax_binary">>package.log
 fi
 
 export MSYS_NO_PATHCONV=1
