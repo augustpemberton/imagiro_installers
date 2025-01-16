@@ -228,7 +228,7 @@ mkdir "${TMPDIR}/${PROJECT_NAME}"
 
 mv "${TMPDIR}/${OUTPUT_BASE_FILENAME}.pkg" "${TMPDIR}/${PROJECT_NAME}"
 
-rm "${output_dir}/$OUTPUT_BASE_FILENAME.dmg" > /dev/null
+rm -f "${output_dir}/$OUTPUT_BASE_FILENAME.dmg" > /dev/null
 
 hdiutil create "${output_dir}/${OUTPUT_BASE_FILENAME}.dmg" -ov \
               -fs JHFS+ \
