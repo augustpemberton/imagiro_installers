@@ -43,6 +43,8 @@ else
   source ~/sign-creds
 fi
 
+export SHOULD_COPY_PLUGIN=FALSE
+
 if [ "$skip_build" != true ] && [ -d "../src/ui/src" ]; then
   echo "building UI..."
   cd ../src/ui/src/
@@ -84,6 +86,8 @@ output_file="output/$PRODUCT_SLUG-win-$VERSION.exe"
 if [[ $OSTYPE == 'darwin'* ]]; then
   output_file="output/$PRODUCT_SLUG-macOS-$VERSION.dmg"
 fi
+
+server_name=$output_file
 
 aws s3 cp "$output_file" s3://imagiro/ \
     --endpoint=https://imagiro.nyc3.digitaloceanspaces.com \
