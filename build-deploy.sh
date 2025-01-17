@@ -111,7 +111,7 @@ echo "notifying server..."
 
 download_url="${cdn_endpoint}/imagiro/${PRODUCT_SLUG}/${server_name}"
 
-curl -s -o /dev/null -d "download_name=installer&download_url=${download_url}&key=$IMAGIRO_CI_KEY&version=$VERSION&slug=$PRODUCT_SLUG&platform=$os_type" \
+curl -s -o /dev/null -d "download_type=installer&download_url=${download_url}&key=$IMAGIRO_CI_KEY&version=$VERSION&slug=$PRODUCT_SLUG&platform=$os_type" \
   -H "Content-Type: application/x-www-form-urlencoded" \
   -X POST https://imagi.ro/api/versions/new
 
