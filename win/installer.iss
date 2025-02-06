@@ -56,4 +56,4 @@ Source: "..\..\build\{#ProjectName}_artefacts\{#BuildType}\Standalone\{#PluginNa
 Source: "..\..\resources\system\*"; DestDir: "{commonappdata}\{#Publisher}\{#ResourceName}\"; Flags: ignoreversion recursesubdirs skipifsourcedoesntexist; Permissions: everyone-full
 
 [Icons]
-Name: "{group}\{#PluginName}"; Filename: "{commonpf}\{#Publisher}\{#PluginName}\{#PluginName}.exe"; Components: standalone
+Name: "{autoprograms}\{#Publisher}\{#PluginName}"; Filename: "{commonpf}\{#Publisher}\{#PluginName}\{#PluginName}.exe"; Components: standalone
