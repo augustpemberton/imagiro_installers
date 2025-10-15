@@ -7,6 +7,7 @@ cd $SCRIPT_DIR
 
 build_aax='true'
 skip_build=''
+skip_ui=''
 skip_package=''
 verbose=''
 
@@ -22,6 +23,10 @@ while [[ $# -gt 0 ]]; do
             ;;
         --skip-build)
             skip_build='true'
+            shift
+            ;;
+        --skip-ui)
+            skip_ui='true'
             shift
             ;;
         --skip-package)
@@ -50,7 +55,7 @@ fi
 
 export SHOULD_COPY_PLUGIN=FALSE
 
-if [ "$skip_build" != true ] && [ -d "../src/ui/src" ]; then
+if [ "$skip_ui" != true ] && [ -d "../src/ui/src" ]; then
   echo "building UI..."
   cd ../src/ui/src/
   yarn&>build.log || exit 1
