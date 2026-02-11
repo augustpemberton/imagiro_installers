@@ -24,6 +24,7 @@ if [ $REBUILD = true ]
 fi
 
 # move build artefacts to /bin to make things easier for packaging
+chmod -R u+rwx "bin/" 2>/dev/null
 rm -rf "bin/"
 mkdir -p "bin/"
 rm -rf "build/${PROJECT_NAME}_artefacts/${BUILD_TYPE}/JuceLibraryCode"

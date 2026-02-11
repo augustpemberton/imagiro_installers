@@ -53,7 +53,7 @@ else
   source ~/sign-creds
 fi
 
-export SHOULD_COPY_PLUGIN=FALSE
+export COPY_PLUGIN_AFTER_BUILD=FALSE
 
 if [ "$skip_ui" != true ] && [ -d "../src/ui/src" ]; then
   echo "building UI..."
